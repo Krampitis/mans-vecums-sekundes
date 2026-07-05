@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mans vecums sekundēs</title>
+<meta name="description" content="Cik sekunžu es jau esmu nodzīvojis? Skaitītājs tikšķ tieši tagad.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://papaya-baklava-f48058.netlify.app/">
+<meta property="og:title" content="Mans vecums sekundēs">
+<meta property="og:description" content="Cik sekunžu es jau esmu nodzīvojis? Skaitītājs tikšķ tieši tagad.">
+<meta property="og:image" content="https://papaya-baklava-f48058.netlify.app/preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mans vecums sekundēs">
+<meta name="twitter:description" content="Cik sekunžu es jau esmu nodzīvojis? Skaitītājs tikšķ tieši tagad.">
+<meta name="twitter:image" content="https://papaya-baklava-f48058.netlify.app/preview.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #f6f2e9;
+  color: #16130d;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.sheet { text-align: center; width: 100%; max-width: 720px; }
+
+.kicker {
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: #8a8474;
+  margin-bottom: 40px;
+}
+
+.odometer {
+  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-weight: 500;
+  font-size: clamp(30px, 8.5vw, 68px);
+  font-variant-numeric: tabular-nums;
+  display: inline-flex;
+  align-items: baseline;
+  line-height: 1;
+}
+.reel { display: inline-block; height: 1em; overflow: hidden; }
+.reel .strip {
+  display: flex;
+  flex-direction: column;
+  transition: transform .45s cubic-bezier(.22,.9,.3,1);
+}
+.reel .strip span { height: 1em; line-height: 1; display: block; }
+.gap { display: inline-block; width: .32ch; }
+.ms {
+  font-size: .34em;
+  color: #b5402f;
+  margin-left: .6ch;
+  min-width: 4ch;
+  text-align: left;
+  font-weight: 400;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #16130d;
+  width: 64px;
+  margin: 44px auto 20px;
+}
+
+.foot {
+  font-size: 13px;
+  color: #8a8474;
+}
+.foot b {
+  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-weight: 500;
+  color: #16130d;
+  font-variant-numeric: tabular-nums;
+}
+.foot b .g { display: inline-block; width: .22ch; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reel .strip { transition: none; }
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="kicker">Mans vecums sekundēs</div>
+
+  <div class="odometer" aria-live="off">
+    <span id="digits"></span><span class="ms" id="ms">.000</span>
+  </div>
+
+  <hr>
+
+  <div class="foot">līdz nākamajai dzimšanas dienai vēl <b id="bd-left"></b></div>
+
+</div>
+
+<script>
+const birth = new Date('1983-05-31T12:30:00');
+const $ = id => document.getElementById(id);
+const digitsEl = $('digits');
+let reelCount = 0;
+
+function buildReels(n) {
+  digitsEl.innerHTML = '';
+  for (let i = 0; i < n; i++) {
+    if (i > 0 && (n - i) % 3 === 0) {
+      const g = document.createElement('span');
+      g.className = 'gap';
+      digitsEl.appendChild(g);
+    }
+    const reel = document.createElement('span');
+    reel.className = 'reel';
+    const strip = document.createElement('span');
+    strip.className = 'strip';
+    for (let d = 0; d <= 9; d++) {
+      const s = document.createElement('span');
+      s.textContent = d;
+      strip.appendChild(s);
+    }
+    reel.appendChild(strip);
+    digitsEl.appendChild(reel);
+  }
+  reelCount = n;
+}
+
+function setDigits(str) {
+  if (str.length !== reelCount) buildReels(str.length);
+  const strips = digitsEl.querySelectorAll('.strip');
+  for (let i = 0; i < str.length; i++) {
+    strips[i].style.transform = 'translateY(-' + str[i] + 'em)';
+  }
+}
+
+function fmt(n) {
+  const s = String(n), g = [];
+  for (let i = s.length; i > 0; i -= 3) g.unshift(s.slice(Math.max(0, i - 3), i));
+  return g.join('<span class="g"></span>');
+}
+
+function anniversaries(now) {
+  let y = now.getFullYear() - birth.getFullYear();
+  let last = new Date(birth); last.setFullYear(birth.getFullYear() + y);
+  if (last > now) { y--; last.setFullYear(birth.getFullYear() + y); }
+  const next = new Date(last); next.setFullYear(last.getFullYear() + 1);
+  return { last: last, next: next };
+}
+
+function update() {
+  const now = new Date();
+  const diff = now - birth;
+  if (diff < 0) { setDigits('0'); $('ms').textContent = '.000'; return; }
+
+  setDigits(String(Math.floor(diff / 1000)));
+  $('ms').textContent = '.' + String(diff % 1000).padStart(3, '0');
+
+  const a = anniversaries(now);
+  const leftSec = Math.ceil((a.next - now) / 1000);
+  $('bd-left').innerHTML = leftSec <= 0 ? 'šodien!' : fmt(leftSec);
+}
+
+buildReels(1);
+update();
+setInterval(update, 50);
+</script>
+</body>
+</html>
