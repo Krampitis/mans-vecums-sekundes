@@ -149,4 +149,33 @@ function setDigits(str) {
 function fmt(n) {
   const s = String(n), g = [];
   for (let i = s.length; i > 0; i -= 3) g.unshift(s.slice(Math.max(0, i - 3), i));
-  return g.join('<span class="g">
+  return g.join('<span class="g"></span>');
+}
+
+function anniversaries(now) {
+  let y = now.getFullYear() - birth.getFullYear();
+  let last = new Date(birth); last.setFullYear(birth.getFullYear() + y);
+  if (last > now) { y--; last.setFullYear(birth.getFullYear() + y); }
+  const next = new Date(last); next.setFullYear(last.getFullYear() + 1);
+  return { last: last, next: next };
+}
+
+function update() {
+  const now = new Date();
+  const diff = now - birth;
+  if (diff < 0) { setDigits('0'); $('ms').textContent = '.000'; return; }
+
+  setDigits(String(Math.floor(diff / 1000)));
+  $('ms').textContent = '.' + String(diff % 1000).padStart(3, '0');
+
+  const a = anniversaries(now);
+  const leftSec = Math.ceil((a.next - now) / 1000);
+  $('bd-left').innerHTML = leftSec <= 0 ? 'šodien!' : fmt(leftSec);
+}
+
+buildReels(1);
+update();
+setInterval(update, 50);
+</script>
+</body>
+</html>
