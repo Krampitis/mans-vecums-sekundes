@@ -3,42 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Atskaites diena</title>
-<meta name="description" content="Cik ilgi es jau turos? Skaitītājs tikšķ tieši tagad.">
+<title>Mans vecums sekundēs</title>
+<meta name="description" content="Cik sekunžu es jau esmu nodzīvojis? Skaitītājs tikšķ tieši tagad.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://krampitis.github.io/atskaites-diena/">
-<meta property="og:title" content="Atskaites diena">
-<meta property="og:description" content="Cik ilgi es jau turos? Skaitītājs tikšķ tieši tagad.">
-<meta property="og:image" content="https://krampitis.github.io/atskaites-diena/preview.png">
+<meta property="og:url" content="https://krampitis.github.io/mans-vecums-sekundes/">
+<meta property="og:title" content="Mans vecums sekundēs">
+<meta property="og:description" content="Cik sekunžu es jau esmu nodzīvojis? Skaitītājs tikšķ tieši tagad.">
+<meta property="og:image" content="https://krampitis.github.io/mans-vecums-sekundes/preview.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Atskaites diena">
-<meta name="twitter:description" content="Cik ilgi es jau turos? Skaitītājs tikšķ tieši tagad.">
-<meta name="twitter:image" content="https://krampitis.github.io/atskaites-diena/preview.png">
+<meta name="twitter:title" content="Mans vecums sekundēs">
+<meta name="twitter:description" content="Cik sekunžu es jau esmu nodzīvojis? Skaitītājs tikšķ tieši tagad.">
+<meta name="twitter:image" content="https://krampitis.github.io/mans-vecums-sekundes/preview.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-:root {
-  --paper: #f6f2e9;
-  --ink: #16130d;
-  --muted: #8a8474;
-  --accent: #b5402f;
-}
-
 body {
-  background: var(--paper);
-  color: var(--ink);
+  background: #f6f2e9;
+  color: #16130d;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
   font-family: 'Inter', system-ui, sans-serif;
-  font-variant-numeric: tabular-nums;
 }
 
 .sheet { text-align: center; width: 100%; max-width: 720px; }
@@ -47,71 +39,57 @@ body {
   font-size: 11px;
   letter-spacing: 5px;
   text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 44px;
+  color: #8a8474;
+  margin-bottom: 40px;
 }
 
-.days {
+.odometer {
+  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-weight: 500;
-  font-size: clamp(64px, 18vw, 140px);
+  font-size: clamp(30px, 8.5vw, 68px);
+  font-variant-numeric: tabular-nums;
+  display: inline-flex;
+  align-items: baseline;
   line-height: 1;
-  letter-spacing: -0.01em;
 }
-
-.days-label {
-  font-size: 13px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-top: 16px;
+.reel { display: inline-block; height: 1em; overflow: hidden; }
+.reel .strip {
+  display: flex;
+  flex-direction: column;
+  transition: transform .45s cubic-bezier(.22,.9,.3,1);
 }
-
-.clock {
+.reel .strip span { height: 1em; line-height: 1; display: block; }
+.gap { display: inline-block; width: .32ch; }
+.ms {
+  font-size: .34em;
+  color: #b5402f;
+  margin-left: .6ch;
+  min-width: 4ch;
+  text-align: left;
   font-weight: 400;
-  font-size: clamp(18px, 4.5vw, 26px);
-  letter-spacing: 3px;
-  color: var(--ink);
-  margin-top: 30px;
 }
-.clock .sec { color: var(--accent); }
 
 hr {
   border: none;
-  border-top: 1px solid var(--ink);
+  border-top: 1px solid #16130d;
   width: 64px;
-  margin: 48px auto 0;
+  margin: 44px auto 20px;
 }
 
-.units {
-  display: flex;
-  justify-content: center;
-  gap: clamp(28px, 7vw, 56px);
-  margin-top: 40px;
+.foot {
+  font-size: 13px;
+  color: #8a8474;
 }
-.unit b {
-  display: block;
+.foot b {
+  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-weight: 500;
-  font-size: clamp(20px, 5vw, 28px);
+  color: #16130d;
+  font-variant-numeric: tabular-nums;
 }
-.unit span {
-  display: block;
-  margin-top: 8px;
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--muted);
-}
+.foot b .g { display: inline-block; width: .22ch; }
 
-.start {
-  margin-top: 48px;
-  font-size: 12px;
-  color: var(--muted);
-  letter-spacing: 1px;
-}
-.start b {
-  font-weight: 400;
-  color: var(--ink);
-  letter-spacing: 1px;
+@media (prefers-reduced-motion: reduce) {
+  .reel .strip { transition: none; }
 }
 </style>
 <script data-goatcounter="https://pi314159.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
@@ -119,81 +97,56 @@ hr {
 <body>
 <div class="sheet">
 
-  <div class="kicker" id="kicker"></div>
+  <div class="kicker">Mans vecums sekundēs</div>
 
-  <div class="days" id="days">0</div>
-  <div class="days-label" id="days-label">dienas</div>
-
-  <div class="clock" id="clock">00:00:00</div>
+  <div class="odometer" aria-live="off">
+    <span id="digits"></span><span class="ms" id="ms">.000</span>
+  </div>
 
   <hr>
 
-  <div class="units" id="units">
-    <div class="unit"><b id="u-weeks">0</b><span id="l-weeks">nedēļas</span></div>
-    <div class="unit"><b id="u-months">0</b><span id="l-months">mēneši</span></div>
-    <div class="unit"><b id="u-years">0</b><span id="l-years">gadi</span></div>
-  </div>
-
-  <div class="start">sākums <b id="start-date"></b></div>
+  <div class="foot">līdz nākamajai dzimšanas dienai vēl <b id="bd-left"></b></div>
 
 </div>
 
 <script>
-/* ------- iestatījumi ------- */
-const START = new Date('2026-07-07T00:00:00');
-const LABEL = 'Atskaites diena';
-/* --------------------------- */
-
+const birth = new Date('1983-05-31T12:30:00');
 const $ = id => document.getElementById(id);
-$('kicker').textContent = LABEL;
+const digitsEl = $('digits');
+let reelCount = 0;
 
-function pluralLV(n, one, many) {
-  return (n % 10 === 1 && n % 100 !== 11) ? one : many;
+function buildReels(n) {
+  digitsEl.innerHTML = '';
+  for (let i = 0; i < n; i++) {
+    if (i > 0 && (n - i) % 3 === 0) {
+      const g = document.createElement('span');
+      g.className = 'gap';
+      digitsEl.appendChild(g);
+    }
+    const reel = document.createElement('span');
+    reel.className = 'reel';
+    const strip = document.createElement('span');
+    strip.className = 'strip';
+    for (let d = 0; d <= 9; d++) {
+      const s = document.createElement('span');
+      s.textContent = d;
+      strip.appendChild(s);
+    }
+    reel.appendChild(strip);
+    digitsEl.appendChild(reel);
+  }
+  reelCount = n;
 }
 
-function pad(n) { return String(n).padStart(2, '0'); }
-
-function fmtDate(d) {
-  return pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + '.' + d.getFullYear() + '.';
+function setDigits(str) {
+  if (str.length !== reelCount) buildReels(str.length);
+  const strips = digitsEl.querySelectorAll('.strip');
+  for (let i = 0; i < str.length; i++) {
+    strips[i].style.transform = 'translateY(-' + str[i] + 'em)';
+  }
 }
 
-function calendarMonths(from, to) {
-  let m = (to.getFullYear() - from.getFullYear()) * 12 + (to.getMonth() - from.getMonth());
-  const probe = new Date(from);
-  probe.setMonth(from.getMonth() + m);
-  if (probe > to) m--;
-  return Math.max(0, m);
-}
-
-$('start-date').textContent = fmtDate(START);
-
-function update() {
-  const now = new Date();
-  const diff = Math.max(0, now - START);
-
-  const days = Math.floor(diff / 86400000);
-  const h = Math.floor(diff / 3600000) % 24;
-  const min = Math.floor(diff / 60000) % 60;
-  const s = Math.floor(diff / 1000) % 60;
-
-  $('days').textContent = days;
-  $('days-label').textContent = pluralLV(days, 'diena', 'dienas');
-  $('clock').innerHTML = pad(h) + ':' + pad(min) + ':<span class="sec">' + pad(s) + '</span>';
-
-  const weeks = Math.floor(days / 7);
-  const months = calendarMonths(START, now);
-  const years = Math.floor(months / 12);
-
-  $('u-weeks').textContent = weeks;
-  $('l-weeks').textContent = pluralLV(weeks, 'nedēļa', 'nedēļas');
-  $('u-months').textContent = months;
-  $('l-months').textContent = pluralLV(months, 'mēnesis', 'mēneši');
-  $('u-years').textContent = years;
-  $('l-years').textContent = pluralLV(years, 'gads', 'gadi');
-}
-
-update();
-setInterval(update, 250);
-</script>
-</body>
-</html>
+function fmt(n) {
+  const s = String(n), g = [];
+  for (let i = s.length; i > 0; i -= 3) g.unshift(s.slice(Math.max(0, i - 3), i));
+  return g.join('<span class="g">
