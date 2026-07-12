@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mans vecums sekundēs</title>
 <meta name="description" content="Cik sekunžu es jau esmu nodzīvojis? Skaitītājs tikšķ tieši tagad.">
+<meta name="theme-color" content="#f6f2e9">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://krampitis.github.io/mans-vecums-sekundes/">
 <meta property="og:title" content="Mans vecums sekundēs">
@@ -16,53 +17,83 @@
 <meta name="twitter:title" content="Mans vecums sekundēs">
 <meta name="twitter:description" content="Cik sekunžu es jau esmu nodzīvojis? Skaitītājs tikšķ tieši tagad.">
 <meta name="twitter:image" content="https://krampitis.github.io/mans-vecums-sekundes/preview.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f6f2e9'/%3E%3Ccircle cx='32' cy='32' r='10' fill='%23b5402f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+:root {
+  --paper: #f6f2e9;
+  --ink: #16130d;
+  --mute: #8a8474;
+  --rust: #b5402f;
+  --hairline: rgba(22, 19, 13, .14);
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+::selection { background: var(--rust); color: var(--paper); }
+
 body {
-  background: #f6f2e9;
-  color: #16130d;
+  background: var(--paper);
+  color: var(--ink);
   min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
   font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-.sheet { text-align: center; width: 100%; max-width: 720px; }
+.sheet {
+  text-align: center;
+  width: 100%;
+  max-width: 720px;
+  animation: rise .7s cubic-bezier(.22,.9,.3,1) both;
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
 
 .kicker {
   font-size: 11px;
+  font-weight: 500;
   letter-spacing: 5px;
+  margin-right: -5px; /* optiskā korekcija burtu atstarpei */
   text-transform: uppercase;
-  color: #8a8474;
-  margin-bottom: 40px;
+  color: var(--mute);
+  margin-bottom: 48px;
 }
 
 .odometer {
-  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-weight: 500;
   font-size: clamp(30px, 8.5vw, 68px);
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
   display: inline-flex;
   align-items: baseline;
   line-height: 1;
 }
-.reel { display: inline-block; height: 1em; overflow: hidden; }
+.reel {
+  display: inline-block;
+  width: 1ch;
+  height: 1em;
+  overflow: hidden;
+}
 .reel .strip {
   display: flex;
   flex-direction: column;
   transition: transform .45s cubic-bezier(.22,.9,.3,1);
 }
 .reel .strip span { height: 1em; line-height: 1; display: block; }
-.gap { display: inline-block; width: .32ch; }
+.gap { display: inline-block; width: .34ch; }
 .ms {
   font-size: .34em;
-  color: #b5402f;
+  color: var(--rust);
   margin-left: .6ch;
   min-width: 4ch;
   text-align: left;
@@ -71,33 +102,59 @@ body {
 
 hr {
   border: none;
-  border-top: 1px solid #16130d;
+  border-top: 1px solid var(--ink);
   width: 64px;
-  margin: 44px auto 20px;
+  margin: 48px auto 22px;
 }
 
 .foot {
   font-size: 13px;
-  color: #8a8474;
+  color: var(--mute);
 }
 .foot b {
-  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-weight: 500;
-  color: #16130d;
+  font-weight: 600;
+  color: var(--ink);
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
 }
 .foot b .g { display: inline-block; width: .22ch; }
 
+.year {
+  width: 160px;
+  height: 1px;
+  background: var(--hairline);
+  margin: 22px auto 0;
+  position: relative;
+  overflow: hidden;
+}
+.year i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  background: var(--rust);
+  transition: width 1s linear;
+}
+
+.since {
+  font-size: 11px;
+  color: var(--mute);
+  letter-spacing: .4px;
+  margin-top: 22px;
+  font-variant-numeric: tabular-nums;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reel .strip { transition: none; }
+  .sheet { animation: none; }
+  .year i { transition: none; }
 }
 </style>
 <script data-goatcounter="https://pi314159.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
-<div class="sheet">
+<main class="sheet">
 
-  <div class="kicker">Mans vecums sekundēs</div>
+  <h1 class="kicker">Mans vecums sekundēs</h1>
 
   <div class="odometer" aria-live="off">
     <span id="digits"></span><span class="ms" id="ms">.000</span>
@@ -105,9 +162,15 @@ hr {
 
   <hr>
 
-  <div class="foot">līdz nākamajai dzimšanas dienai vēl <b id="bd-left"></b></div>
+  <p class="foot">līdz nākamajai dzimšanas dienai vēl <b id="bd-left"></b></p>
 
-</div>
+  <div class="year" role="presentation" title="Gads starp dzimšanas dienām"><i id="year-fill"></i></div>
+
+  <p class="since">skaitīts kopš 1983. gada 31. maija, 12:30</p>
+
+  <noscript><p class="foot" style="margin-top:22px">Skaitītājam nepieciešams JavaScript.</p></noscript>
+
+</main>
 
 <script>
 const birth = new Date('1983-05-31T12:30:00');
@@ -171,6 +234,9 @@ function update() {
   const a = anniversaries(now);
   const leftSec = Math.ceil((a.next - now) / 1000);
   $('bd-left').innerHTML = leftSec <= 0 ? 'šodien!' : fmt(leftSec);
+
+  const pct = Math.min(100, Math.max(0, (now - a.last) / (a.next - a.last) * 100));
+  $('year-fill').style.width = pct.toFixed(4) + '%';
 }
 
 buildReels(1);
